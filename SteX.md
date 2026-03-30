@@ -15,3 +15,16 @@ Q2: Metric Equivalency for Mean Accepted Tokens: Given that the Soft-gated Evalu
 Q3: Specification of Quality Metrics in Figure 5: How is the relative performance (generation quality) mathematically computed in Figure 5?
 
 Q4: In standard speculative decoding, the native target model's performance serves as a strict mathematical upper bound. However, Table 6 shows the proposed method occasionally outperforming the Vanilla target model. Does this indicate that SENSE is functionally acting as a Retrieval-Augmented Generation (RAG) system? If so, does this approach highly relies on the datastore's quality?
+
+
+W1、Q2、Q3是定义问题
+
+W2解释吧
+
+W4说明tree attention
+
+W3 spec-bench，明天再看看吧
+
+Q1 再解释一下数据来源和构建方法
+
+Q4

@@ -12,3 +12,15 @@ Q1: How exactly is the datastore constructed for each experiment? Is it built so
 Q2: How does performance change when varying datastore size, domain mismatch, and retrieval recall.
 
 Q3: Can the authors provide a detailed breakdown of runtime between retrieval, verification, and model forward passes?
+
+
+W1和Q2合并
+
+润色W2，和Q2合并
+
+润色W3，不过我想和W1放在一起
+
+Q3似乎也在一起
+
+review想看的：datastore size的影响，检索带来的开销
+
