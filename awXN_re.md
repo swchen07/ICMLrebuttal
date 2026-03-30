@@ -10,7 +10,7 @@ The datastore in SENSE consists of two components: a static corpus $C_s$ and a d
 |-|-|-|-|-|
 |2.1M|16M|15M|5M|1.7M|
 
-Consistent with existing retrieval-based draft methods such as REST and DReSD, SENSE’s datastore construction is a one-time preprocessing overhead. The table below details the end-to-end construction time for Longbench-v2 (~1.7M entries):
+Consistent with existing retrieval-based draft methods such as REST and DReSD, SENSE’s datastore construction is a one-time preprocessing overhead. The table below details the end-to-end construction time for Longbench-v2 (1.7M entries):
 
 |Embedding Data for PCA|Training PCA|Generate Embedding|Faiss Indexing|Total|
 |-|-|-|-|-|
