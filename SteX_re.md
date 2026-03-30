@@ -6,7 +6,9 @@ Our design is grounded in the Pareto front by Yin et al. (NeurIPS 2024, Thm 5): 
 
 Furthermore, Figure 4 and Table 4 benchmarks SE against ARC and FLY—both equally relaxed. Under identical retrieval, SE outperforms both on most models (16–22% gains). If relaxation trivially inflated metrics, ARC/FLY would match SE. Relaxed SD is a peer-reviewed direction: Judge Decoding (ICLR 2025) concluded strict matching is the bottleneck; 15+ concurrent works explore this paradigm.
 
-**W2: Datastore Dependency.** Table 1 covers four heterogeneous domains (math, code, dialogue, QA) with positive speedup across all. Table 8 shows strong results even on the smallest datastores (GSM8K: 105–406 MB → 2.73–2.94× on Qwen). Two robustness mechanisms: (1) C_d accumulates hidden states on-the-fly (Alg. 1, L28), building a domain-adapted buffer even when C_s is mismatched; (2) Eq. 8's composite scoring (α≫β) falls back to standard RSD when semantic candidates are unavailable—SENSE never underperforms traditional RSD.
+**W2: Datastore Dependency.** 
+We thank the reviewer for raising this critical point regarding domain generalization—a fundamental challenge for all retrieval-based systems. We address this from two practical perspectives:First, Low-Cost Domain Adaptation: While domain shifts naturally degrade the static $C_s$, constructing our datastore incurs a fraction of the cost of training-based methods. This lightweight, one-time preprocessing enables rapid, plug-and-play adaptation to new domains (as shown in Table 1).Second, Dynamic Out-of-Domain Compensation: Our hybrid datastore inherently mitigates domain mismatch. While $C_s$ provides domain-specific priors, the dynamic $C_d$ focuses strictly on the ongoing context, effectively capturing session-specific patterns and local lexical repetitions in real-time to sustain high acceleration even in unseen domains.
+
 
 **W3: Generation Quality.** Quality preservation under relaxed SD is documented: Judge Decoding (ICLR 2025) reports near-perfect preservation; MARS (2026) maintains accuracy parity; FSD (2025) matches SD accuracy on GSM8K at 3–4 additional tok/s—consistent with Pareto front theory.
 
