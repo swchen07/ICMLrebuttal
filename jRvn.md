@@ -16,8 +16,6 @@ Q3: Can the authors provide a detailed breakdown of runtime between retrieval, v
 
 W1和Q2合并
 
-润色W2，和Q2合并
-
 润色W3，不过我想和W1放在一起
 
 Q3似乎也在一起
