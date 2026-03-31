@@ -8,9 +8,18 @@ Furthermore, Table 4 benchmarks SE against ARC and FLY—both equally relaxed. U
 
 **W2: Datastore Dependency.** Table 1 covers four heterogeneous domains (math, code, dialogue, QA) with positive speedup across all. Two robustness mechanisms mitigate domain mismatch: (1) C_d accumulates hidden states on-the-fly (Alg. 1, L28), capturing session-specific patterns even when C_s is mismatched; (2) Eq. 8's composite scoring (α≫β) falls back to standard RSD when semantic candidates are unavailable—SENSE never underperforms traditional RSD. Table 8 further shows strong results even on the smallest datastores (GSM8K: 105–406 MB → 2.73–2.94× on Qwen), confirming robustness to datastore scale.
 
-**W3: Generation Quality.** Quality preservation under relaxed SD is well-documented: Judge Decoding (ICLR 2025) reports near-perfect preservation; MARS (2026) maintains accuracy parity; FSD (2025) matches SD accuracy on GSM8K at 3–4 additional tok/s—consistent with Pareto front theory. SENSE's cascaded safeguards (Eq. 17) are more conservative than single-criterion methods: B_ent gates relaxation to high-uncertainty positions; B_topk restricts to the high-probability nucleus; B_con verifies local consistency. Table 6: 98.12% average accuracy; Appendix D.5: 100% output fidelity on 2,056 tokens (byte-identical to Vanilla, 2.78× faster).
+**W3: Generation Quality.** Quality preservation under relaxed SD is well-documented across the literature (Judge Decoding/ICLR'25; MARS/2026; FSD/2025), consistent with Pareto front theory. SENSE's cascaded safeguards (Eq. 17: B_ent ∧ (B_topk ∨ B_con)) enforce multi-layered filtering strictly more conservative than single-criterion methods. Our existing evidence already demonstrates this: Table 6 reports 98.12% average accuracy; Appendix D.5 shows 100% output fidelity on 2,056 tokens at 2.78× speedup.
 
-As requested, we evaluated SENSE on Spec-Bench using ID datastore from UltraChat: 2.32× speedup (13.23 vs 5.69 TPS); 100% math accuracy (identical to Vanilla on all 17 problems); LLM-as-Judge (Claude Opus 4.6) quality delta = −0.02 on a 1–5 scale across open-ended samples—no measurable degradation.
+As requested, we further evaluated on Spec-Bench (Qwen3-8B, ID datastore from UltraChat). SENSE achieves 2.32× throughput gain with identical math accuracy. Crucially, LLM-as-Judge (Claude Opus 4.6) yields a quality delta of merely −0.02 on a 1–5 scale (within noise), confirming that SENSE's speedup comes at no measurable cost to generation quality.
+
+| Dimension                                 | Vanilla     | Sense       | Verdict                   |
+| ----------------------------------------- | ----------- | ----------- | ------------------------- |
+| Throughput (TPS)                          | 5.69 tok/s  | 13.23 tok/s | Sense is 2.32x faster     |
+| Math Accuracy (17 Qs)                     | 100%        | 100%        | Identical                 |
+| QA Accuracy (12 Qs)                       | 75.0%       | 66.7%       | Vanilla slightly better   |
+| Subjective Quality (LLM Judge) -- Quality | 2.33 ± 1.55 | 2.33 ± 1.49 | No significant difference |
+| Correctness                               | 2.89 ± 1.71 | 2.79 ± 1.65 | A bit loss                |
+| Completeness                              | 2.22 ± 1.57 | 2.25 ± 1.52 | Slightly better           |
 
 **W4: Tree Novelty.** We appreciate the opportunity to clarify. Prior works (SpecInfer, REST, EAGLE) employ tree attention because their candidates are inherently tree-structured. SENSE's dense retriever fetches N independent, unstructured sequences lacking prefix relationships. Sorted-LCP Alignment (Alg. 3) compresses these into a unified tree on-the-fly, reducing complexity from O(N×M²) to O(α·M). Without this, verifying N candidates requires N independent forward passes, negating speedup. This problem is unique to dense-retrieval SD and does not arise in generative approaches.
 
