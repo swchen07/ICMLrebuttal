@@ -2,7 +2,7 @@ We thank the reviewer for the constructive feedback and address each point below
 
 **Q1:** All speedup results are based on end-to-end TPS measured on 4 NVIDIA RTX4090. The TPS is calculated by dividing the total number of generated tokens by the wall-clock time, which is strictly measured from the query input until the completion of decoding. All measurements are conducted under identical conditions (greedy, temperature = 0, FP32). Overhead including FAISS retrieval (CPU), Loose Trie construction, tree-attention verification, and KV cache updates (GPU) is fully accounted for in the total time.
 
-**Q2:** $C_d$ starts empty and grows on-the-fly by accumulating context during generation, requiring no offline cost. The scale of $C_s$ (ID) for our primary datasets is summarized below:
+**Q2:** $C_d$ starts empty and grows on-the-fly by accumulating context during generation, requiring no offline cost. Table below is the scale of $C_s$ (ID) for our benchmarks:
 |GSM8K|CodeAlpaca|Ultrachat|TriviaQA|Longbenchv2|
 |-|-|-|-|-|
 |2.1M|16M|15M|5M|1.7M|
@@ -28,10 +28,10 @@ To evaluate SENSE's sensitivity to the $C_s$ scale, we subsampled the datastore 
 |75%|7.6|1.94|0.008|0.953|
 |100%|11.6|3.10|0.007|0.960|
 
-**Q3 & L2:** As highlighted in the excellent concurrent work RAPID, processing long contexts significantly bottlenecks the draft generation time of standard draft models.
+**Q3 & L2:** As highlighted in the concurrent work RAPID, processing long contexts bottlenecks the draft generation time of standard draft models.
 Conceptually, SENSE leverages dense retrieval for drafting, keeping retrieval time robust against context length. This efficiency is twofold: the static $C_s$ ensures constant latency regardless of the prompt, and while the dynamic $C_d$ grows linearly, its search overhead remains orders of magnitude lower than standard autoregressive inference.
 
-We further evaluated SENSE on the challenging LongBench-v2 dataset. We randomly sampled 200 instances to build the datastore and used the remainder as the test set. Evaluated on Qwen3-8B using RAPID’s 8k/16k truncation strategy, we compared SENSE against speculative decoding baselines. As shown below, SENSE consistently maintains a clear acceleration advantage in long-context tasks.
+We evaluate SENSE on LongBench-v2 dataset. We randomly sampled 200 instances to build the datastore and used the remainder as the test set. Evaluated on Qwen3-8B using RAPID’s 8k/16k truncation strategy, we compared SENSE against SD baselines. As shown below, SENSE consistently maintains a clear advantage in long-context tasks.
 
 ||$a$(8k)|$\tau$(8k)|$s$(8k)|$a$(16k)|$\tau$(16k)|$s$(16k)|
 |-|-|-|-|-|-|-|
