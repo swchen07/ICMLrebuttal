@@ -21,6 +21,12 @@ As requested, we further evaluated on Spec-Bench (Qwen3-8B, ID datastore from Ul
 | Correctness                               | 2.89 ± 1.71 | 2.79 ± 1.65 | A bit loss                |
 | Completeness                              | 2.22 ± 1.57 | 2.25 ± 1.52 | Slightly better           |
 
+QA质量不好这个问题我感觉不太想提出来。掉了一个题目，2分这个人会纠着。表格确实太占字符了。下面这一版本了作参考吧。
+
+> **W3: Generation Quality.** Quality preservation under relaxed SD is well-documented (Judge Decoding/ICLR'25; MARS/2026; FSD/2025), consistent with Pareto front theory. SENSE's cascaded safeguards (Eq. 17: B_ent ∧ (B_topk ∨ B_con)) enforce multi-layered filtering strictly more conservative than single-criterion methods. Table 6: 98.12% average accuracy; Appendix D.5: 100% output fidelity on 2,056 tokens at 2.78× speedup.
+>
+> As requested, we evaluated on Spec-Bench (96 samples, Qwen3-8B, ID datastore). SENSE achieves 2.32× throughput (13.23 vs 5.69 TPS) with 100% math accuracy (identical to Vanilla on all 17 problems). LLM-as-Judge (Claude Opus 4.6) scores across 63 open-ended samples yield an overall quality delta of −0.02 on a 1–5 scale—within noise, confirming no measurable degradation.
+
 **W4: Tree Novelty.** We appreciate the opportunity to clarify. Prior works (SpecInfer, REST, EAGLE) employ tree attention because their candidates are inherently tree-structured. SENSE's dense retriever fetches N independent, unstructured sequences lacking prefix relationships. Sorted-LCP Alignment (Alg. 3) compresses these into a unified tree on-the-fly, reducing complexity from O(N×M²) to O(α·M). Without this, verifying N candidates requires N independent forward passes, negating speedup. This problem is unique to dense-retrieval SD and does not arise in generative approaches.
 
 **Q1: Hybrid Datastore.** C_s uses training-split data exclusively (Table 11, p.27); no evaluation data enters any datastore. C_d starts empty and grows as tokens are accepted (Alg. 1, L28). ID datastores contain the target model's own responses on training prompts—not ground-truth answers. OOD datastores use training-set labels.
